@@ -1,0 +1,30 @@
+{
+    "steps": [
+      {
+        "name": "setupDatabase",
+        "message": "Configuring the database"
+      },
+      {
+        "name": "setupLaravelBackend",
+        "message": "Setting up Laravel backend"
+      },
+      {
+        "name": "installGraphQL",
+        "message": "Installing GraphQL and Apollo Server"
+      },
+      {
+        "name": "configureApollo",
+        "message": "Configuring Apollo with Laravel"
+      },
+      {
+        "name": "updateEnvFile",
+        "message": "Updating .env file"
+      },
+      {
+        "name": "runArtisanCommands",
+        "commands": ["key:generate", "storage:link", "migrate"],
+        "message": "Running Laravel Artisan commands"
+      }
+    ]
+  }
+  

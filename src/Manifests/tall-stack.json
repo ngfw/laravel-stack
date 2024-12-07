@@ -1,0 +1,49 @@
+{
+    "steps": [
+      {
+        "name": "setupProject",
+        "message": "Creating the Laravel project"
+      },
+      {
+        "name": "configureEnv",
+        "message": "Configuring the .env file"
+      },
+      {
+        "name": "setupDatabase",
+        "message": "Configuring the database"
+      },
+      {
+        "name": "installPackages",
+        "message": "Installing required packages (Livewire, Filament, etc.)"
+      },
+      {
+        "name": "configureTailwind",
+        "message": "Configuring Tailwind CSS"
+      },
+      {
+        "name": "runMigrations",
+        "message": "Running migrations"
+      },
+      {
+        "name": "installFilamentPanels",
+        "message": "Installing Filament Panels"
+      },
+      {
+        "name": "installNpm",
+        "message": "Installing NPM packages"
+      },
+      {
+        "name": "optimizeInstallation",
+        "message": "Optimizing installation"
+      },
+      {
+        "name": "createAdminUser",
+        "message": "Creating the admin user"
+      },
+      {
+        "name": "addDevServerScript",
+        "message": "Adding devServer.sh script"
+      }
+    ]
+  }
+  

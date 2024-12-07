@@ -1,0 +1,24 @@
+{
+    "name": "ngfw/laravel-stack-installer",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Ngfw\\LaravelStackInstaller\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nick G",
+            "email": "gejadze@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "symfony/console": "7.3.x-dev",
+        "symfony/process": "7.3.x-dev",
+        "livewire/livewire": "dev-main",
+        "filament/filament": "^2.0@beta",
+        "spatie/laravel-permission": "^6.0@dev"
+    }
+}

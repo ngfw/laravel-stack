@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+require __DIR__ . '/../vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use Ngfw\LaravelStackInstaller\Commands\MenuCommand;
+use Ngfw\LaravelStackInstaller\Commands\InstallTallStackCommand;
+use Ngfw\LaravelStackInstaller\Commands\InstallNextBreezeCommand;
+use Ngfw\LaravelStackInstaller\Commands\InstallApiOnlyStackCommand;
+use Ngfw\LaravelStackInstaller\Commands\InstallGraphQLStackCommand;
+use Ngfw\LaravelStackInstaller\Commands\InstallInertiaStackCommand;
+use Ngfw\LaravelStackInstaller\Commands\InstallVueTailwindStackCommand;
+use Ngfw\LaravelStackInstaller\Commands\InstallReactTailwindStackCommand;
+use Ngfw\LaravelStackInstaller\Commands\InstallLivewireTailwindStackCommand;
+
+$application = new Application('Laravel Stack Installer', '1.0');
+
+$application->add(new MenuCommand());
+$application->add(new InstallApiOnlyStackCommand());
+$application->add(new InstallGraphQLStackCommand());
+$application->add(new InstallInertiaStackCommand());
+$application->add(new InstallLivewireTailwindStackCommand());
+$application->add(new InstallNextBreezeCommand());
+$application->add(new InstallTallStackCommand());
+$application->add(new InstallReactTailwindStackCommand());
+$application->add(new InstallVueTailwindStackCommand());
+
+$application->setDefaultCommand(MenuCommand::getDefaultName(), true);
+$application->run();
