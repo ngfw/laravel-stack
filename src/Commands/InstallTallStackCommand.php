@@ -10,11 +10,4 @@ class InstallTallStackCommand extends BaseInstallCommand
     protected string $title = "TALL Stack";
     protected string $installerClass = TallStackInstaller::class;
 
-    protected function configure()
-    {
-        $this->setDescription(sprintf(
-            'Installs the %s (Laravel 11, AlpineJS, TailwindCSS, Livewire, Filament)',
-            $this->title
-        ));
-    }
 }

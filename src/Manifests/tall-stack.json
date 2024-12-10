@@ -1,23 +1,27 @@
 {
     "steps": [
       {
-        "name": "setupProject",
-        "message": "Creating the Laravel project"
+        "name": "setupDatabase",
+        "message": "Configuring the database"
+      },
+      {
+        "name": "setupLaravelBackend",
+        "message": "Setting up Laravel backend"
       },
       {
         "name": "updateEnvFile",
         "message": "Configuring the .env file"
       },
       {
-        "name": "setupDatabase",
-        "message": "Configuring the database"
+        "name": "installFilament",
+        "message": "Installing required Livewire and Filament"
       },
       {
-        "name": "installPackages",
-        "message": "Installing required packages (Livewire, Filament, etc.)"
+        "name": "installLaravelPermission",
+        "message": "Installing Laravel Permission"
       },
       {
-        "name": "configureTailwind",
+        "name": "setupTailwind",
         "message": "Configuring Tailwind CSS"
       },
       {

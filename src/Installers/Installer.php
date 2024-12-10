@@ -19,6 +19,7 @@ abstract class Installer
     protected ?string $frontendSubDirectory;
     protected string $manifestFile;
     protected object $output;
+    protected array $finalNotes;
 
     public function __construct($stack, $projectName, $dbHost, $dbUser, $dbPassword, OutputInterface $output, $backendSubDirectory = null, $frontendSubDirectory = null)
     {
@@ -45,6 +46,10 @@ abstract class Installer
                 throw new \Exception("Manifest file not found.");
             }
 
+            if(file_exists($this->getBackendDirectory())){
+                throw new \Exception("/{$this->projectName} directory already exists!");
+            }
+
             $manifest = json_decode(file_get_contents($manifestFile), true);
             $this->validateManifest($manifest);
 
@@ -54,6 +59,7 @@ abstract class Installer
                 }
             }
 
+            
             $this->output->writeln("<info>Installation completed successfully!</info>");
 
             $io->success(sprintf('%s installation completed successfully!', $this->stack));
@@ -92,7 +98,7 @@ abstract class Installer
                 $notes[] = '- Log viewer for the backend server.';
             }
 
-            $io->note($notes);
+            $io->note($this->finalNotes ?? $notes);
 
             return true;
         } catch (\Exception $e) {
@@ -257,10 +263,10 @@ abstract class Installer
         $this->output->writeln("<info>→  Setting up Laravel backend...</info>");
 
         $fullPath = $this->projectName . ($this->backendSubDirectory ? "/{$this->backendSubDirectory}" : '');
-
+        
         $process = Process::fromShellCommandline("composer create-project laravel/laravel {$fullPath}");
         $process->run();
-
+        
         if (!$process->isSuccessful()) {
             $this->output->writeln("<error>Error setting up Laravel backend: {$process->getErrorOutput()}</error>");
             return false;
