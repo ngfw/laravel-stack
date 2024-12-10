@@ -2,11 +2,15 @@
     "steps": [
       {
         "name": "setupDatabase",
-        "message": "Configuring the database"
+        "message": "Setup the database"
       },
       {
         "name": "setupLaravelBackend",
         "message": "Setting up Laravel API backend"
+      },
+      {
+        "name": "setupBreeze",
+        "message": "Setting up Laravel Breeze"
       },
       {
         "name": "setupNextFrontend",
@@ -14,7 +18,7 @@
       },
       {
         "name": "installNpm",
-        "message": "Installing NPM packages on frontend"
+        "message": "Installing NPM packages"
       },
       {
         "name": "updateEnvFile",

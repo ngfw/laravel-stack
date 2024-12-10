@@ -1,8 +1,8 @@
 <?php
 
-namespace Ngfw\LaravelStackInstaller\Commands;
+namespace Ngfw\LaravelStack\Commands;
 
-use Ngfw\LaravelStackInstaller\Installers\NextBreezeInstaller;
+use Ngfw\LaravelStack\Installers\NextBreezeInstaller;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'install:next-breeze')]
@@ -10,9 +10,7 @@ class InstallNextBreezeCommand extends BaseInstallCommand
 {
     protected string $title = 'Next.js Breeze Stack';
     protected string $installerClass = NextBreezeInstaller::class;
+    protected ?string $backendSubDirectory = "api";
+    protected ?string $frontendSubDirectory = "www";
 
-    protected function configure()
-    {
-        $this->setDescription('Installs the Laravel + Next.js Breeze stack (frontend and backend integration)');
-    }
 }

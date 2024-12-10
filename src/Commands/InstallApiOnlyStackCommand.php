@@ -1,8 +1,8 @@
 <?php
 
-namespace Ngfw\LaravelStackInstaller\Commands;
+namespace Ngfw\LaravelStack\Commands;
 
-use Ngfw\LaravelStackInstaller\Installers\ApiOnlyStackInstaller;
+use Ngfw\LaravelStack\Installers\ApiOnlyStackInstaller;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'install:api-only-stack')]

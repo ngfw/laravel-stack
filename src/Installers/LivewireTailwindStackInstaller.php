@@ -1,7 +1,7 @@
 <?php 
-namespace Ngfw\LaravelStackInstaller\Installers;
+namespace Ngfw\LaravelStack\Installers;
 
-use Ngfw\LaravelStackInstaller\Helpers\DatabaseHelper;
+use Ngfw\LaravelStack\Helpers\DatabaseHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class LivewireTailwindStackInstaller

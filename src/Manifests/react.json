@@ -6,11 +6,19 @@
       },
       {
         "name": "setupLaravelBackend",
-        "message": "Setting up Laravel API backend"
+        "message": "Setting up Laravel backend"
       },
       {
-        "name": "setupReactFrontend",
-        "message": "Setting up React frontend"
+        "name": "createEmptyLogFile",
+        "message": "Creating API log file (storage/logs/laravel.log)"
+      },
+      {
+        "name": "installInertia",
+        "message": "Install Laravel Inertia"
+      },
+      {
+        "name": "reactify",
+        "message": "Integrate React Into Laravel"
       },
       {
         "name": "installNpm",
@@ -21,13 +29,18 @@
         "message": "Updating .env file"
       },
       {
-        "name": "configureTailwind",
+        "name": "setupTailwind",
         "message": "Configuring Tailwind CSS"
       },
       {
         "name": "runArtisanCommands",
         "commands": ["key:generate", "storage:link", "migrate"],
         "message": "Running Laravel Artisan commands"
+      },
+      
+      {
+        "name": "addDevServerScript",
+        "message": "Adding devServer.sh script"
       }
     ]
   }

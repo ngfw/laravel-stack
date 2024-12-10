@@ -1,8 +1,8 @@
 <?php
 
-namespace Ngfw\LaravelStackInstaller\Commands;
+namespace Ngfw\LaravelStack\Commands;
 
-use Ngfw\LaravelStackInstaller\Installers\LivewireTailwindStackInstaller;
+use Ngfw\LaravelStack\Installers\LivewireTailwindStackInstaller;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'install:livewire-tailwind')]

@@ -1,8 +1,8 @@
 <?php
-namespace Ngfw\LaravelStackInstaller\Commands;
+namespace Ngfw\LaravelStack\Commands;
 
 use Symfony\Component\Console\Attribute\AsCommand;
-use Ngfw\LaravelStackInstaller\Installers\TallStackInstaller;
+use Ngfw\LaravelStack\Installers\TallStackInstaller;
 
 #[AsCommand(name: 'install:tall-stack')]
 class InstallTallStackCommand extends BaseInstallCommand

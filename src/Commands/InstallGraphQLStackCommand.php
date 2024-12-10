@@ -1,8 +1,8 @@
 <?php
 
-namespace Ngfw\LaravelStackInstaller\Commands;
+namespace Ngfw\LaravelStack\Commands;
 
-use Ngfw\LaravelStackInstaller\Installers\GraphQLStackInstaller;
+use Ngfw\LaravelStack\Installers\GraphQLStackInstaller;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'install:graphql-stack')]

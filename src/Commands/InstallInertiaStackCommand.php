@@ -1,8 +1,8 @@
 <?php
 
-namespace Ngfw\LaravelStackInstaller\Commands;
+namespace Ngfw\LaravelStack\Commands;
 
-use Ngfw\LaravelStackInstaller\Installers\InertiaStackInstaller;
+use Ngfw\LaravelStack\Installers\InertiaStackInstaller;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'install:inertia-stack')]

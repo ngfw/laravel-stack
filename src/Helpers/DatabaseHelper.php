@@ -1,5 +1,5 @@
 <?php 
-namespace Ngfw\LaravelStackInstaller\Helpers;
+namespace Ngfw\LaravelStack\Helpers;
 
 class DatabaseHelper
 {

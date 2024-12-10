@@ -1,6 +1,6 @@
 <?php
 
-namespace Ngfw\LaravelStackInstaller\Helpers;
+namespace Ngfw\LaravelStack\Helpers;
 
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Question\Question;
@@ -51,7 +51,7 @@ class InputHelper
     {
         // Collect inputs using InputHelper
         $projectName = $this->askValidated(
-            'Please provide a project name: ',
+            'Please provide a project name (or domain): ',
             fn($answer) => $this->validateNotEmpty($answer, 'Project name cannot be empty.')
         );
 

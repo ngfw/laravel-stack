@@ -5,7 +5,7 @@
         "message": "Creating the Laravel project"
       },
       {
-        "name": "configureEnv",
+        "name": "updateEnvFile",
         "message": "Configuring the .env file"
       },
       {

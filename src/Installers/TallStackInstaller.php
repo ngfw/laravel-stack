@@ -1,53 +1,17 @@
 <?php
 
-namespace Ngfw\LaravelStackInstaller\Installers;
+namespace Ngfw\LaravelStack\Installers;
 
 use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Output\OutputInterface;
-use Ngfw\LaravelStackInstaller\Helpers\DatabaseHelper;
+use Ngfw\LaravelStack\Helpers\DatabaseHelper;
 
-class TallStackInstaller
+class TallStackInstaller extends Installer
 {
-    protected $projectName;
-    protected $dbHost;
-    protected $dbUser;
-    protected $dbPassword;
-    protected $output;
+
 
     protected $manifestFile = '../Manifests/tall-stack.json';
 
-    public function __construct($projectName, $dbHost, $dbUser, $dbPassword, OutputInterface $output)
-    {
-        $this->projectName = $projectName;
-        $this->dbHost = $dbHost;
-        $this->dbUser = $dbUser;
-        $this->dbPassword = $dbPassword;
-        $this->output = $output;
-    }
-
-    public function run()
-    {
-        $this->output->writeln("<info>Setting up TALL stack for '{$this->projectName}'...</info>");
-
-        $manifest = json_decode(file_get_contents(dirname(__FILE__) . "/" . $this->manifestFile), true);
-
-        if (!$manifest) {
-            $this->output->writeln("<error>Failed to load manifest file.</error>");
-            return false;
-        }
-
-        foreach ($manifest['steps'] as $step) {
-            $method = 'handle' . ucfirst($step['name']);
-            if (method_exists($this, $method)) {
-                $this->output->writeln("<info>{$step['message']}</info>");
-                $this->$method($step);
-            } else {
-                $this->output->writeln("<warning>Step '{$step['name']}' has no handler method defined.</warning>");
-            }
-        }
-        $this->renderComplitionBanner();
-        return true;
-    }
 
     protected function renderComplitionBanner(){
         $projectPath = getcwd() . "/{$this->projectName}/";
@@ -66,10 +30,6 @@ class TallStackInstaller
         $process->run();
     }
 
-    protected function handleConfigureEnv($step)
-    {
-        $this->configureEnv();
-    }
 
     protected function handleSetupDatabase($step)
     {
@@ -89,11 +49,7 @@ class TallStackInstaller
         $process->run();
     }
 
-    protected function handleConfigureTailwind($step)
-    {
-        $this->configureTailwind();
-    }
-
+    
     protected function handleRunMigrations($step)
     {
         $projectPath = getcwd() . "/{$this->projectName}/";
@@ -150,45 +106,7 @@ class TallStackInstaller
         $this->replaceInFile($envPath, 'APP_URL=.*', "APP_URL=http://127.0.0.1:8000");
     }
 
-    protected function configureTailwind()
-    {
-        $projectPath = getcwd() . "/{$this->projectName}/";
 
-        $process = Process::fromShellCommandline("cd $projectPath && npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init");
-        $process->run();
-
-        
-        $tailwindConfigPath = "$projectPath/tailwind.config.js";
-        file_put_contents(
-            $tailwindConfigPath,
-            <<<EOT
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  darkMode: 'class',
-  content: [
-    './resources/**/*.blade.php',
-    './resources/**/*.js',
-    './resources/**/*.vue',
-    './vendor/filament/**/*.blade.php',
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-};
-EOT
-        );
-
-        $appCssPath = "$projectPath/resources/css/app.css";
-        file_put_contents(
-            $appCssPath,
-            <<<EOT
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-EOT
-        );
-    }
 
     protected function replaceInFile($filePath, $searchPattern, $replacement)
     {

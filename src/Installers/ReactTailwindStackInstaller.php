@@ -1,89 +1,145 @@
-<?php 
-namespace Ngfw\LaravelStackInstaller\Installers;
+<?php
 
-use Ngfw\LaravelStackInstaller\Helpers\DatabaseHelper;
-use Symfony\Component\Console\Output\OutputInterface;
+namespace Ngfw\LaravelStack\Installers;
 
-class ReactTailwindStackInstaller
+use Symfony\Component\Process\Process;
+use Ngfw\LaravelStack\Helpers\ArrayHelper;
+
+class ReactTailwindStackInstaller extends Installer
 {
-    protected $projectName;
-    protected $dbHost;
-    protected $dbUser;
-    protected $dbPassword;
-    protected $output;
+    protected string $manifestFile = '/Manifests/react.json';
+    protected string $boilerplatePath = '/Boilerplates/react/';
 
-    public function __construct($projectName, $dbHost, $dbUser, $dbPassword, OutputInterface $output)
+    public function installInertia()
     {
-        $this->projectName = $projectName;
-        $this->dbHost = $dbHost;
-        $this->dbUser = $dbUser;
-        $this->dbPassword = $dbPassword;
-        $this->output = $output;
-    }
+        $this->output->writeln("<info>→  Setting up Laravel inertia...</info>");
 
-    public function run()
-    {
-        $this->output->writeln("<info>Setting up React + Tailwind CSS stack for '{$this->projectName}'...</info>");
+        $fullPath = $this->projectName . ($this->backendSubDirectory ? "/{$this->backendSubDirectory}" : '');
 
-        try {
-            $this->output->writeln("<info>Creating Laravel project...</info>");
-            $this->runShellCommand("composer create-project laravel/laravel {$this->projectName}");
+        $process = Process::fromShellCommandline("cd {$fullPath} && composer require inertiajs/inertia-laravel");
+        $process->run();
 
-            $this->configureEnv();
-
-            $dbHelper = new DatabaseHelper($this->dbHost, $this->dbUser, $this->dbPassword);
-            if (!$dbHelper->createDatabase($this->projectName)) {
-                $this->output->writeln("<error>Database '{$this->projectName}' already exists or cannot be created.</error>");
-                return false;
-            }
-
-            $projectPath = getcwd() . "/{$this->projectName}/";
-            $this->output->writeln("<info>Installing React...</info>");
-            $this->runShellCommand("cd {$projectPath} && npm install react react-dom react-router-dom");
-
-            $this->output->writeln("<info>Configuring Tailwind CSS...</info>");
-            $this->runShellCommand("cd {$projectPath} && npm install -D tailwindcss postcss autoprefixer && npx tailwindcss init");
-
-            $this->output->writeln("<info>Running migrations...</info>");
-            $this->runShellCommand("cd {$projectPath} && php artisan migrate");
-
-            $this->output->writeln("<info>✓ React + Tailwind CSS stack setup completed!</info>");
-            return true;
-        } catch (\Exception $e) {
-            $this->output->writeln("<error>An error occurred: {$e->getMessage()}</error>");
+        if (!$process->isSuccessful()) {
+            $this->output->writeln("<error>Error setting up Laravel inertia: {$process->getErrorOutput()}</error>");
             return false;
         }
+
+        $this->output->writeln("<info>✓ Laravel inertia setup completed.</info>");
+        return true;
+    
     }
 
-    protected function configureEnv()
+    public function reactify()
     {
-        $envPath = getcwd() . "/{$this->projectName}/.env";
-        if (!file_exists($envPath)) {
-            throw new \Exception("The .env file for the project '{$this->projectName}' was not found.");
+        $projectPath = $this->getBackendDirectory();
+
+        // Generate vite.config.ts
+        $viteConfigPath = "$projectPath/vite.config.js";
+        file_put_contents(
+            $viteConfigPath,
+            <<<EOT
+        import { defineConfig } from 'vite';
+        import laravel from 'laravel-vite-plugin';
+        import react from '@vitejs/plugin-react';
+        import path from "path";
+
+        export default defineConfig({
+            plugins: [
+                laravel({
+                    input: ['resources/css/app.css', 'resources/js/app.js', 'resources/react/App.tsx'],
+                    refresh: true,
+                }),
+                react(),
+            ],
+            resolve: {
+                alias: {
+                    '@/': `\${path.resolve(__dirname, './resources/react')}/`,
+                    '~/': `\${path.resolve(__dirname, './public')}/`,
+                }
+            },
+        });
+        EOT
+        );
+
+        $tsconfigPath = "$projectPath/tsconfig.json";
+        $newTsConfig = [
+            'compilerOptions' => [
+                'allowJs' => true,
+                'module' => 'ESNext',
+                'moduleResolution' => 'bundler',
+                'jsx' => 'react-jsx',
+                'strict' => true,
+                'isolatedModules' => true,
+                'target' => 'ESNext',
+                'esModuleInterop' => true,
+                'forceConsistentCasingInFileNames' => true,
+                'noEmit' => true,
+                'paths' => [
+                    '@/*' => ['./resources/react/*'],
+                ],
+            ],
+            'include' => [
+                'resources/react/**/*.ts',
+                'resources/react/**/*.tsx',
+                'resources/react/**/*.d.ts',
+            ],
+        ];
+
+        // Read existing tsconfig.json if it exists
+        if (file_exists($tsconfigPath)) {
+            $existingTsConfig = json_decode(file_get_contents($tsconfigPath), true) ?? [];
+            $mergedTsConfig = ArrayHelper::merge($existingTsConfig, $newTsConfig);
+        } else {
+            $mergedTsConfig = $newTsConfig;
         }
 
-        $this->replaceInFile($envPath, 'APP_NAME=.*', "APP_NAME=\"{$this->projectName}\"");
-        $this->replaceInFile($envPath, 'DB_CONNECTION=.*', 'DB_CONNECTION=mysql');
-        $this->replaceInFile($envPath, '# DB_DATABASE=.*', "DB_DATABASE={$this->projectName}");
-        $this->replaceInFile($envPath, '# DB_USERNAME=.*', "DB_USERNAME={$this->dbUser}");
-        $this->replaceInFile($envPath, '# DB_PASSWORD=.*', "DB_PASSWORD={$this->dbPassword}");
-        $this->replaceInFile($envPath, '# DB_HOST=.*', "DB_HOST={$this->dbHost}");
-        $this->replaceInFile($envPath, 'APP_URL=.*', "APP_URL=http://127.0.0.1:8000");
-    }
+        // Write merged configuration
+        file_put_contents($tsconfigPath, json_encode($mergedTsConfig, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-    protected function runShellCommand($command)
-    {
-        $output = shell_exec($command);
-        if ($output === null) {
-            throw new \Exception("Command failed: $command");
+
+        $packageJsonPath = "$projectPath/package.json";
+        $newPackageJson = [
+            'private' => true,
+            'type' => 'module',
+            'scripts' => [
+                'start' => 'vite',
+                'test:ts' => 'tsc -w',
+                'build' => 'vite build',
+            ],
+            'devDependencies' => [
+                '@inertiajs/react' => '^1.2.0',
+                '@types/react' => '^18.3.0',
+                '@types/react-dom' => '^18.3.0',
+                '@vitejs/plugin-react' => '^4.3.4',
+                'autoprefixer' => '^10.4.20',
+                'axios' => '^1.7.9',
+                'laravel-vite-plugin' => '^1.1.1',
+                'path' => '^0.12.7',
+                'postcss' => '^8.4.31',
+                'react' => '^18.3.0',
+                'react-dom' => '^18.3.0',
+                'sass' => '^1.82.0',
+                'tailwindcss' => '^3.4.16',
+                'typescript' => '^5.7.2',
+                'vite' => '^6.0.3',
+                'ziggy-js' => '^2.4.1',
+            ],
+        ];
+
+        // Read existing package.json if it exists
+        if (file_exists($packageJsonPath)) {
+            $existingPackageJson = json_decode(file_get_contents($packageJsonPath), true) ?? [];
+            $mergedPackageJson = ArrayHelper::merge($existingPackageJson, $newPackageJson);
+        } else {
+            $mergedPackageJson = $newPackageJson;
         }
-        $this->output->writeln($output);
-    }
 
-    protected function replaceInFile($filePath, $searchPattern, $replacement)
-    {
-        $fileContents = file_get_contents($filePath);
-        $updatedContents = preg_replace("/^{$searchPattern}/m", $replacement, $fileContents);
-        file_put_contents($filePath, $updatedContents);
+        // Write merged package.json
+        file_put_contents($packageJsonPath, json_encode($mergedPackageJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+        $boilerplatePath = realpath(dirname(__FILE__) . "/../") . "{$this->boilerplatePath}";
+        $this->copyDirectory("$boilerplatePath/resources", "$projectPath/resources");
+        $this->copyDirectory("$boilerplatePath/routes", "$projectPath/routes");
+        return true;
     }
 }

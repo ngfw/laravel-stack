@@ -1,18 +1,20 @@
 <?php
 
-namespace Ngfw\LaravelStackInstaller\Commands;
+namespace Ngfw\LaravelStack\Commands;
 
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 
 #[AsCommand(name: 'Menu')]
 class MenuCommand extends Command
 {
+    
     protected static $menu = [
         '▲ Next.js + Breeze' => [
             "message" => "Installing Next.js + Breeze stack...",
@@ -61,10 +63,13 @@ class MenuCommand extends Command
         ],
     ];
 
-
     protected function configure()
     {
-        $this->setDescription('Interactive Laravel Stack Installer');
+        $this->setDescription('Interactive Laravel Stack Installer')
+            ->addOption('project', null, InputOption::VALUE_REQUIRED, 'The project name or domain')
+            ->addOption('db.host', null, InputOption::VALUE_REQUIRED, 'The database host', 'localhost')
+            ->addOption('db.user', null, InputOption::VALUE_REQUIRED, 'The database user', 'root')
+            ->addOption('db.password', null, InputOption::VALUE_OPTIONAL, 'The database password');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -94,7 +99,15 @@ class MenuCommand extends Command
                 $application = $this->getApplication();
                 if ($application) {
                     $command = $application->find($commandName);
-                    $arguments = [];
+
+                    // Prepare arguments to pass options to the sub-command
+                    $arguments = [
+                        '--project' => $input->getOption('project'),
+                        '--db.host' => $input->getOption('db.host'),
+                        '--db.user' => $input->getOption('db.user'),
+                        '--db.password' => $input->getOption('db.password'),
+                    ];
+
                     $arrayInput = new ArrayInput($arguments);
                     $exitCode = $command->run($arrayInput, $output);
                     return $exitCode;
