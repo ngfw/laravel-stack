@@ -9,26 +9,6 @@ class ReactTailwindStackInstaller extends Installer
 {
     protected string $manifestFile = '/Manifests/react.json';
     protected string $boilerplatePath = '/Boilerplates/react/';
-
-    public function installInertia()
-    {
-        $this->output->writeln("<info>→  Setting up Laravel inertia...</info>");
-
-        $fullPath = $this->projectName . ($this->backendSubDirectory ? "/{$this->backendSubDirectory}" : '');
-
-        $process = Process::fromShellCommandline("cd {$fullPath} && composer require inertiajs/inertia-laravel");
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            $this->output->writeln("<error>Error setting up Laravel inertia: {$process->getErrorOutput()}</error>");
-            return false;
-        }
-
-        $this->output->writeln("<info>✓ Laravel inertia setup completed.</info>");
-        return true;
-    
-    }
-
     public function reactify()
     {
         $projectPath = $this->getBackendDirectory();
@@ -123,6 +103,7 @@ class ReactTailwindStackInstaller extends Installer
                 'typescript' => '^5.7.2',
                 'vite' => '^6.0.3',
                 'ziggy-js' => '^2.4.1',
+                '@tsparticles/confetti' => '^3.7.1'
             ],
         ];
 

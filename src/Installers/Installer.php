@@ -187,9 +187,8 @@ abstract class Installer
 
         $this->output->writeln("<info>→ Running Laravel artisan command: php artisan tinker --execute=\"Log::info('" . $logMessage . "');\"</info>");
 
-        $this->runArtisanCommand("tinker --execute=\"Log::info('" . $logMessage . "');\"");
+        return $this->runArtisanCommand("tinker --execute=\"Log::info('" . $logMessage . "');\"");
 
-        return true;
     }
 
     /**
@@ -355,11 +354,29 @@ EOT
         return getcwd() . "/{$this->projectName}" . ($this->backendSubDirectory ? "/{$this->backendSubDirectory}" : '');
     }
 
+    public function installInertia()
+    {
+        $this->output->writeln("<info>→  Setting up Laravel inertia...</info>");
+
+        $fullPath = $this->projectName . ($this->backendSubDirectory ? "/{$this->backendSubDirectory}" : '');
+
+        $process = Process::fromShellCommandline("cd {$fullPath} && composer require inertiajs/inertia-laravel");
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            $this->output->writeln("<error>Error setting up Laravel inertia: {$process->getErrorOutput()}</error>");
+            return false;
+        }
+
+        $this->output->writeln("<info>✓ Laravel inertia setup completed.</info>");
+        return true;
+    }
+
     protected function runArtisanCommand($command)
     {
         $projectDir = $this->getBackendDirectory();
 
-        $this->output->writeln("<info>→  Running php artisan {$command}...</info>");
+        $this->output->writeln("<info>→ Running php artisan {$command}...</info>");
 
         if ($command === 'storage:link') {
             $this->fixStoragePermissions($projectDir);

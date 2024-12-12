@@ -26,7 +26,7 @@ class MenuCommand extends Command
             "description" => "React + Tailwind CSS: A stack for building modern frontend interfaces with React and styling with Tailwind CSS.",
             "commandName" => 'install:react-tailwind',
         ],
-        '✧ Vue + Tailwind Stack' => [
+        '✧ Vue + Inertia.js + Tailwind Stack' => [
             "message" => "Installing Vue + Tailwind stack...",
             "description" => "Vue + Tailwind CSS: Combines Vue.js for dynamic UI components with Tailwind CSS for styling.",
             "commandName" => 'install:vue-tailwind',
@@ -35,11 +35,6 @@ class MenuCommand extends Command
             "message" => "Installing TALL stack...",
             "description" => "TALL Stack: Combines TailwindCSS, AlpineJS, Laravel, and FilamentPHP for a clean and productive UI/UX workflow.",
             "commandName" => 'install:tall-stack',
-        ],
-        '⬡ Inertia.js + Vue.js' => [
-            "message" => "Installing Inertia.js + Vue.js stack...",
-            "description" => "Inertia.js + Vue.js: Seamlessly integrates Laravel with Vue.js for dynamic single-page apps.",
-            "commandName" => 'install:inertia-stack',
         ],
         '◉ Livewire + Tailwind Stack' => [
             "message" => "Installing Livewire + Tailwind stack...",
@@ -51,7 +46,7 @@ class MenuCommand extends Command
             "description" => "API-Only Stack: A lightweight Laravel setup for purely API-driven applications.",
             "commandName" => 'install:api-only-stack',
         ],
-        '⚡ GraphQL Stack' => [
+        '⬡ GraphQL Stack' => [
             "message" => "Installing GraphQL stack...",
             "description" => "GraphQL Stack: Integrates GraphQL with Laravel for flexible API queries.",
             "commandName" => 'install:graphql-stack',

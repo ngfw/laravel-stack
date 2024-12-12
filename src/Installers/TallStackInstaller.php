@@ -25,62 +25,62 @@ class TallStackInstaller extends Installer
 
     protected function installFilament($step)
     {
-        $this->output->writeln("<info>→  Setting up Filament</info>");
-        $projectPath = $this->getBackendDirectory();
-        $process = Process::fromShellCommandline("cd {$projectPath} && composer require livewire/livewire filament/filament:\"^3.2\" -W");
-        $process->run();
-        $this->output->writeln("<info>✓ Filament setup completed.</info>");
-        return true;
-       
+        return $this->execute(
+            "composer require livewire/livewire filament/filament:\"^3.2\" -W",
+            "Filament setup completed."
+        );
     }
     protected function installLaravelPermission($step)
     {
-        $this->output->writeln("<info>→  Setting up spatie/laravel-permission</info>");
-        $projectPath = $this->getBackendDirectory();
-        $process = Process::fromShellCommandline("cd {$projectPath} && composer require spatie/laravel-permission");
-        $process->run();
-        $this->output->writeln("<info>✓ spatie/laravel-permission setup completed.</info>");
-        return true;
-       
+        return $this->execute(
+            "composer require spatie/laravel-permission",
+            "spatie/laravel-permission setup completed."
+        );
     }
-    
+
     protected function runMigrations($step)
     {
-        $this->output->writeln("<info>→  Running Migration</info>");
-        $projectPath = $this->getBackendDirectory();
-        $process = Process::fromShellCommandline("cd {$projectPath} && php artisan migrate");
-        $process->run();
-        $this->output->writeln("<info>✓ Filament setup completed.</info>");
-        return true;
+        return $this->execute(
+            "php artisan migrate",
+            "Filament setup completed."
+        );
     }
 
     protected function installFilamentPanels($step)
     {
-        $this->output->writeln("<info>→  Setting up Filament Panels</info>");
-        $projectPath = $this->getBackendDirectory();
-        $process = Process::fromShellCommandline("cd {$projectPath} && php artisan filament:install --panels -n");
-        $process->run();
-        $this->output->writeln("<info>✓ Filament Panels setup completed.</info>");
-        return true;
+        return $this->execute(
+            "php artisan filament:install --panels -n",
+            "Filament Panels setup completed."
+        );
     }
 
     protected function optimizeInstallation($step)
     {
-        $this->output->writeln("<info>→  Optimizing Installation</info>");
-        $projectPath = $this->getBackendDirectory();
-        $process = Process::fromShellCommandline("cd {$projectPath} && php artisan filament:optimize && php artisan optimize:clear");
-        $process->run();
-        $this->output->writeln("<info>✓ Optimized! </info>");
-        return true;
+        return $this->execute(
+            "php artisan filament:optimize && php artisan optimize:clear",
+            "Optimized! "
+        );
     }
 
     protected function createAdminUser($step)
     {
-        $this->output->writeln("<info>→  Creating admin user.</info>");
+        return $this->execute(
+            "php artisan make:filament-user --name=Admin --email=admin@{$this->projectName}.com --password=admin",
+            "Done - email: admin@{$this->projectName}.com password: admin "
+        );
+    }
+
+    protected function execute($command, $message = null)
+    {
+        $this->output->writeln("<info>→  Executing: {$command}</info>");
         $projectPath = $this->getBackendDirectory();
-        $process = Process::fromShellCommandline("cd {$projectPath} && php artisan make:filament-user --name=Admin --email=admin@{$this->projectName}.com --password=admin");
+        $process = Process::fromShellCommandline("cd {$projectPath} && {$command}");
         $process->run();
-        $this->output->writeln("<info>✓ Done - email: admin@{$this->projectName}.com password: admin </info>");
+        if (!$process->isSuccessful()) {
+            $this->output->writeln("<error>Error executing {$command}: {$process->getErrorOutput()}</error>");
+            return false;
+        }
+        $this->output->writeln("<info>✓ " . ($message ? $message : 'done!') . "</info>");
         return true;
     }
 }

@@ -9,7 +9,7 @@ use Ngfw\LaravelStack\Commands\InstallNextBreezeCommand;
 use Ngfw\LaravelStack\Commands\InstallApiOnlyStackCommand;
 use Ngfw\LaravelStack\Commands\InstallGraphQLStackCommand;
 use Ngfw\LaravelStack\Commands\InstallInertiaStackCommand;
-use Ngfw\LaravelStack\Commands\InstallVueTailwindStackCommand;
+use Ngfw\LaravelStack\Commands\InstallVITStackCommand;
 use Ngfw\LaravelStack\Commands\InstallReactTailwindStackCommand;
 use Ngfw\LaravelStack\Commands\InstallLivewireTailwindStackCommand;
 
@@ -23,7 +23,7 @@ $application->add(new InstallLivewireTailwindStackCommand());
 $application->add(new InstallNextBreezeCommand());
 $application->add(new InstallTallStackCommand());
 $application->add(new InstallReactTailwindStackCommand());
-$application->add(new InstallVueTailwindStackCommand());
+$application->add(new InstallVITStackCommand());
 
 $application->setDefaultCommand(MenuCommand::getDefaultName(), true);
 $application->run();

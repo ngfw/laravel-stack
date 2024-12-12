@@ -1,0 +1,47 @@
+{
+    "steps": [
+      {
+        "name": "setupDatabase",
+        "message": "Configuring the database"
+      },
+      {
+        "name": "setupLaravelBackend",
+        "message": "Setting up Laravel backend"
+      },
+      {
+        "name": "createEmptyLogFile",
+        "message": "Creating API log file (storage/logs/laravel.log)"
+      },
+      {
+        "name": "installInertia",
+        "message": "Install Laravel Inertia"
+      },
+      {
+        "name": "installNpm",
+        "message": "Installing NPM packages"
+      },
+      {
+        "name": "vuefy",
+        "message": "Integrate React Into Laravel"
+      },
+      {
+        "name": "updateEnvFile",
+        "message": "Updating .env file"
+      },
+      {
+        "name": "setupTailwind",
+        "message": "Configuring Tailwind CSS"
+      },
+      {
+        "name": "runArtisanCommands",
+        "commands": ["key:generate", "storage:link", "migrate"],
+        "message": "Running Laravel Artisan commands"
+      },
+      
+      {
+        "name": "addDevServerScript",
+        "message": "Adding devServer.sh script"
+      }
+    ]
+  }
+  
