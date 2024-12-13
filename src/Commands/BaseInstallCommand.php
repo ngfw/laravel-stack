@@ -19,9 +19,9 @@ abstract class BaseInstallCommand extends Command
     protected function configure()
     {
         $this
-            ->addOption('project', null, InputOption::VALUE_REQUIRED, 'The project name or domain')
-            ->addOption('db.host', null, InputOption::VALUE_REQUIRED, 'The database host', 'localhost')
-            ->addOption('db.user', null, InputOption::VALUE_REQUIRED, 'The database user', 'root')
+            ->addOption('project', null, InputOption::VALUE_OPTIONAL, 'The project name or domain')
+            ->addOption('db.host', null, InputOption::VALUE_OPTIONAL, 'The database host', 'localhost')
+            ->addOption('db.user', null, InputOption::VALUE_OPTIONAL, 'The database user', 'root')
             ->addOption('db.password', null, InputOption::VALUE_OPTIONAL, 'The database password');
     }
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -29,19 +29,20 @@ abstract class BaseInstallCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $inputHelper = new InputHelper($io);
 
+        $projectName = $input->getOption('project');
+        $dbHost = $input->getOption('db.host');
+        $dbUser = $input->getOption('db.user');
+        $dbPassword = $input->getOption('db.password');
+        $io->info(implode(", ", [$projectName , $dbHost , $dbUser, $dbPassword] ));
+
+        if (!$projectName  || $dbPassword === null) {
+            $io->warning('Some required options are missing or using default values. Falling back to interactive prompts.');
+            [$projectName, $dbHost, $dbUser, $dbPassword] = $inputHelper->collectBasicProjectData();
+        }
+
+        $io->title(sprintf('<fg=cyan>Starting %s Installation...</fg=cyan>', $this->title));
+
         try {
-            $projectName = $input->getOption('project');
-            $dbHost = $input->getOption('db.host');
-            $dbUser = $input->getOption('db.user');
-            $dbPassword = $input->getOption('db.password');
-
-            // If any of the required options are missing, fall back to prompts
-            if (!$projectName || !$dbHost || !$dbUser || !$dbPassword) {
-                [$projectName, $dbHost, $dbUser, $dbPassword] = $inputHelper->collectBasicProjectData();
-            }
-
-            $io->title(sprintf('<fg=cyan>Starting %s Installation...</fg=cyan>', $this->title));
-
             $installerClass = $this->installerClass;
             $installer = new $installerClass(
                 $this->title,
@@ -69,4 +70,3 @@ abstract class BaseInstallCommand extends Command
         }
     }
 }
-

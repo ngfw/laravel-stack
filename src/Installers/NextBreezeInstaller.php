@@ -8,6 +8,7 @@ class NextBreezeInstaller extends Installer
 {
     protected string $breezeNextURL = "https://github.com/laravel/breeze-next.git";
     protected string $manifestFile = '/Manifests/next.js.json';
+    protected string $boilerplatePath = '/Boilerplates/next.js/';
 
     protected function createEmptyLogFile($step)
     {
@@ -32,6 +33,10 @@ class NextBreezeInstaller extends Installer
             return false;
         }
 
+        $boilerplatePath = realpath(dirname(__FILE__) . "/../") . "{$this->boilerplatePath}";
+        $this->copyDirectory("$boilerplatePath/src", getcwd() . "/{$this->projectName}" ."/www/src/");
+        $this->copyFile(getcwd() . "/{$this->projectName}" ."/www/.env.example", getcwd() . "/{$this->projectName}" ."/www/.env.local");
+
         $this->output->writeln("<info>✓ Next.js project created.</info>");
         return true;
     }
@@ -51,4 +56,5 @@ class NextBreezeInstaller extends Installer
         $this->output->writeln("<info>✓ Laravel project created.</info>");
         return true;
     }
+
 }

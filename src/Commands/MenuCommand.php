@@ -97,13 +97,14 @@ class MenuCommand extends Command
 
                     // Prepare arguments to pass options to the sub-command
                     $arguments = [
-                        '--project' => $input->getOption('project'),
-                        '--db.host' => $input->getOption('db.host'),
-                        '--db.user' => $input->getOption('db.user'),
-                        '--db.password' => $input->getOption('db.password'),
+                        '--project' => $input->getOption('project') ?? null,
+                        '--db.host' => $input->getOption('db.host') ?? null,
+                        '--db.user' => $input->getOption('db.user') ?? null,
+                        '--db.password' => $input->getOption('db.password') ?? null,
                     ];
 
                     $arrayInput = new ArrayInput($arguments);
+                    
                     $exitCode = $command->run($arrayInput, $output);
                     return $exitCode;
                 }

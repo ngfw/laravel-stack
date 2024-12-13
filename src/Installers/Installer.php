@@ -46,7 +46,7 @@ abstract class Installer
                 throw new \Exception("Manifest file not found.");
             }
 
-            if(file_exists($this->getBackendDirectory())){
+            if (file_exists($this->getBackendDirectory())) {
                 throw new \Exception("/{$this->projectName} directory already exists!");
             }
 
@@ -59,7 +59,7 @@ abstract class Installer
                 }
             }
 
-            
+
             $this->output->writeln("<info>Installation completed successfully!</info>");
 
             $io->success(sprintf('%s installation completed successfully!', $this->stack));
@@ -188,7 +188,6 @@ abstract class Installer
         $this->output->writeln("<info>→ Running Laravel artisan command: php artisan tinker --execute=\"Log::info('" . $logMessage . "');\"</info>");
 
         return $this->runArtisanCommand("tinker --execute=\"Log::info('" . $logMessage . "');\"");
-
     }
 
     /**
@@ -257,15 +256,15 @@ abstract class Installer
     }
 
 
-    protected function setupLaravelBackend($step)
+    protected function setupLaravelBackend()
     {
         $this->output->writeln("<info>→  Setting up Laravel backend...</info>");
 
         $fullPath = $this->projectName . ($this->backendSubDirectory ? "/{$this->backendSubDirectory}" : '');
-        
+
         $process = Process::fromShellCommandline("composer create-project laravel/laravel {$fullPath}");
         $process->run();
-        
+
         if (!$process->isSuccessful()) {
             $this->output->writeln("<error>Error setting up Laravel backend: {$process->getErrorOutput()}</error>");
             return false;
@@ -299,6 +298,27 @@ abstract class Installer
         }
 
         $this->output->writeln("<info>✓ NPM Packages insalled sucessfully</info>");
+        return true;
+    }
+
+    protected function installConfetti()
+    {
+        $this->output->writeln("<info>→  Setting up @tsparticles/confetti</info>");
+
+        $frontendPath = getcwd() . "/{$this->projectName}/" . (
+            !empty($this->frontendSubDirectory)
+            ? $this->frontendSubDirectory
+            : ""
+        );
+        $process = Process::fromShellCommandline("cd {$frontendPath} && npm install @tsparticles/confetti");
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            $this->output->writeln("<error>Failed to install @tsparticles/confetti: {$process->getErrorOutput()}</error>");
+            return false;
+        }
+
+        $this->output->writeln("<info>✓ Confetti installed.</info>");
         return true;
     }
 
@@ -447,6 +467,40 @@ EOT
             }
         }
     }
+
+    /**
+     * Copy file
+     * @param string $source
+     * @param string $destination
+     * @throws \RuntimeException
+     * @return void
+     */
+    protected function copyFile(string $source, string $destination): void
+    {
+        if (!file_exists($source)) {
+            throw new \RuntimeException("The source file '{$source}' does not exist.");
+        }
+
+        if (!is_readable($source)) {
+            throw new \RuntimeException("The source file '{$source}' is not readable.");
+        }
+
+        $destinationDir = dirname($destination);
+
+        // Ensure the destination directory exists
+        if (!is_dir($destinationDir)) {
+            if (!mkdir($destinationDir, 0755, true) && !is_dir($destinationDir)) {
+                throw new \RuntimeException("Failed to create destination directory '{$destinationDir}'.");
+            }
+        }
+
+        // Attempt to copy the file
+        if (!@copy($source, $destination)) {
+            $error = error_get_last();
+            throw new \RuntimeException("Failed to copy file: " . ($error['message'] ?? 'Unknown error'));
+        }
+    }
+
 
 
     /**

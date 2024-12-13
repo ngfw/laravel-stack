@@ -21,6 +21,10 @@
         "message": "Installing NPM packages"
       },
       {
+        "name": "installConfetti",
+        "message": "Installing Confetti package"
+      },
+      {
         "name": "updateEnvFile",
         "message": "Updating .env file"
       },
