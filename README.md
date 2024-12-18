@@ -83,6 +83,45 @@ The following installers are available in Laravel Stack Installer. Each provides
 
 ---
 
+## Starting the Development Environment
+
+After installing your stack, a `devServer.sh` script is included in your project directory. This script simplifies the process of setting up and running your development environment.
+
+### Usage Instructions
+
+#### **Navigate to Your Project Directory**  
+   Move into the directory where your new stack is installed. For example, if your project is named `MyFirstStack`,  than run:
+
+   ```bash
+   cd MyFirstStack/
+   ```
+
+#### **Run the Dev Server Script**
+Execute the devServer.sh script to start the development environment
+
+  ```bash 
+  ./devServer.sh
+  ```
+ 
+The behavior of this script depends on the stack you’ve chosen. It typically manages multiple processes, such as:
+
+  - Running the Laravel backend server (php artisan serve).
+  - Launching frontend development servers (e.g., Next.js or Inertia.js).
+  - And last tailing logs for real-time updates.
+
+#### Example Stack Behaviors
+|              **Laravel Default Stack**          |               **Example Laravel + Next.js Stack**           |
+|---|---|
+| For most stacks, the `devServer.sh` script starts the Laravel development server, and the application can be accessed at: | For stacks like Next.js, the development process involves multiple servers. When you run the `devServer.sh` script, three terminal panels may open: |
+|`http://127.0.0.1:8000`| - Laravel Backend Server Runs on `http://127.0.0.1:8000`. |
+|| - Next.js Development Server Runs on `http://127.0.0.1:3000`. |
+|The first log message will confirm this:| Log message: |
+|`[INFO] Laravel Installation Successfully`|`[INFO] Laravel Installation Successfully`|
+|`[INFO] Your application is running on http://127.0.0.1:8000/`|`[INFO] Your Next.JS application is running on http://127.0.0.1:3000/` |
+||`[INFO] Your Laravel API is running on http://127.0.0.1:8000/` |
+
+
+
 ## Development Progress
 Below is the current status of all supported installers:
 

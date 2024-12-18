@@ -181,7 +181,7 @@ abstract class Installer
         return true;
     }
 
-    protected function createEmptyLogFile($step)
+    protected function createEmptyLogFile()
     {
         $logMessage = "Laravel Installation Successfully";
 

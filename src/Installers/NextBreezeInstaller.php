@@ -10,18 +10,22 @@ class NextBreezeInstaller extends Installer
     protected string $manifestFile = '/Manifests/next.js.json';
     protected string $boilerplatePath = '/Boilerplates/next.js/';
 
-    protected function createEmptyLogFile($step)
+    protected function createEmptyLogFile()
     {
-        $logMessage = "Laravel Installation Successfully";
+        $logMessageTitle = "Laravel Installation Successfully";
+        $logMessage = "Your Next.JS application is running on http://127.0.0.1:3000/ ";
+        $logMessage2 = "Your Laravel API is running on http://127.0.0.1:8000/ ";
 
         $this->output->writeln("<info>→ Running Laravel artisan command: php artisan tinker --execute=\"Log::info('" . $logMessage . "');\"</info>");
 
+        $this->runArtisanCommand("tinker --execute=\"Log::info('" . $logMessageTitle . "');\"");
         $this->runArtisanCommand("tinker --execute=\"Log::info('" . $logMessage . "');\"");
+        $this->runArtisanCommand("tinker --execute=\"Log::info('" . $logMessage2 . "');\"");
 
         return true;
     }
 
-    protected function setupNextFrontend($step)
+    protected function setupNextFrontend()
     {
         $this->output->writeln("<info>→ Setting up Next.js frontend...</info>");
 
@@ -40,7 +44,7 @@ class NextBreezeInstaller extends Installer
         $this->output->writeln("<info>✓ Next.js project created.</info>");
         return true;
     }
-    protected function setupBreeze($step)
+    protected function setupBreeze()
     {
         $this->output->writeln("<info>→  Setting up Laravel Breeze...</info>");
 
