@@ -27,7 +27,9 @@ Run the following command to install the tool globally using Composer:
 composer global require ngfw/laravel-stack
 ```
 
-Make sure the returned path (e.g., `~/.composer/vendor/bin` or `~/.config/composer/vendor/bin`) is added to your system's PATH. For example:
+Make sure the composer path (e.g., `~/.composer/vendor/bin` or `~/.config/composer/vendor/bin`) is added to your system's PATH. 
+
+Or add it with command:
 
 - On Linux or macOS:
   ```bash
@@ -88,9 +90,9 @@ Below is the current status of all supported installers:
 - [x] **React + Tailwind Stack**
 - [x] **Vue + Inertia.js + Tailwind Stack**
 - [x] **TALL Stack**
-- [x] **Livewire + Tailwind Stack**
-- [x] **API-Only Stack**
-- [x] **GraphQL Stack**
+- [] **Livewire + Tailwind Stack**
+- [] **API-Only Stack**
+- [] **GraphQL Stack**
 
 ---
 
