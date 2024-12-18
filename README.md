@@ -90,9 +90,9 @@ Below is the current status of all supported installers:
 - [x] **React + Tailwind Stack**
 - [x] **Vue + Inertia.js + Tailwind Stack**
 - [x] **TALL Stack**
-- [] **Livewire + Tailwind Stack**
-- [] **API-Only Stack**
-- [] **GraphQL Stack**
+- [ ] **Livewire + Tailwind Stack**
+- [ ] **API-Only Stack**
+- [ ] **GraphQL Stack**
 
 ---
 
