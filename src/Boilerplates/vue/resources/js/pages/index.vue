@@ -117,64 +117,101 @@ export default {
     }
 
     .circles {
-      @apply absolute inset-0 w-full h-full overflow-hidden;
+      @apply absolute inset-0 w-full h-full overflow-hidden opacity-50;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li::before,
+      li::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        background-color: transparent;
+      }
+
+      li::before {
+        @apply border-2 border-red-800/80;
+        top: -30%;
+        left: -30%;
+        animation: scale1 25s linear infinite;
+      }
+
+      li::after {
+        @apply border-2 border-red-500;
+        top: -30%;
+        left: -30%;
+        animation: scale2 25s linear infinite;
+      }
+
       li {
-        @apply absolute block list-none;
-        z-index:0;
+        @apply absolute block list-none rounded-full border-2 border-red-400;
+        z-index: 0;
         width: 20px;
         height: 20px;
-        background: linear-gradient(225deg, #070a10 30%, #ff0cc27d 50%, #070a10 70%);
+        background: url('https://laravel.com/assets/img/welcome/background.svg');
+        background-repeat: no-repeat;
         animation: animate 25s linear infinite;
         bottom: -180px;
+
         &:nth-child(1) {
           left: 25%;
           @apply w-20 h-20;
           animation-delay: 0s;
         }
+
         &:nth-child(2) {
           left: 10%;
           @apply w-5 h-5;
           animation-delay: 2s;
           animation-duration: 12s;
         }
+
         &:nth-child(3) {
           left: 70%;
           @apply w-5 h-5;
           animation-delay: 4s;
         }
+
         &:nth-child(4) {
           left: 40%;
           @apply w-16 h-16;
           animation-delay: 0s;
           animation-duration: 18s;
         }
+
         &:nth-child(5) {
           left: 65%;
           @apply w-5 h-5;
           animation-delay: 0s;
         }
+
         &:nth-child(6) {
           left: 75%;
           @apply w-28 h-28;
           animation-delay: 3s;
         }
+
         &:nth-child(7) {
           left: 35%;
           @apply w-36 h-36;
           animation-delay: 7s;
         }
+
         &:nth-child(8) {
           left: 50%;
           @apply w-6 h-6;
           animation-delay: 15s;
           animation-duration: 45s;
         }
+
         &:nth-child(9) {
           left: 20%;
           @apply w-4 h-4;
           animation-delay: 2s;
           animation-duration: 35s;
         }
+
         &:nth-child(10) {
           left: 85%;
           @apply w-36 h-36;
@@ -182,6 +219,42 @@ export default {
           animation-duration: 11s;
         }
       }
+    }
+  }
+
+  @keyframes scale1 {
+    0% {
+      width: 140%;
+      height: 140%;
+      top: -20%;
+      left: -20%;
+      border-radius: 100%;
+    }
+
+    100% {
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      border-radius: 90%;
+    }
+  }
+
+  @keyframes scale2 {
+    0% {
+      width: 130%;
+      height: 130%;
+      top: -15%;
+      left: -15%;
+      border-radius: 100%;
+    }
+
+    100% {
+      width: 170%;
+      height: 170%;
+      top: -35%;
+      left: -35%;
+      border-radius: 90%;
     }
   }
 }

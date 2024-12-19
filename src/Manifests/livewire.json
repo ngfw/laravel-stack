@@ -9,25 +9,45 @@
         "message": "Setting up Laravel backend"
       },
       {
-        "name": "setupLivewireFrontend",
+        "name": "updateEnvFile",
+        "message": "Configuring the .env file"
+      },
+      {
+        "name": "setupLivewire",
         "message": "Setting up Livewire components"
+      },
+      {
+        "name": "setupBreeze",
+        "message": "Setting up Laravel Breeze"
+      },
+      {
+        "name": "setupTailwind",
+        "message": "Configuring Tailwind CSS"
+      },
+      {
+        "name": "runArtisanCommands",
+        "commands": ["key:generate", "storage:link", "breeze:install livewire --dark -q -n", "migrate"],
+        "message": "Running Laravel Artisan commands"
+      },
+      {
+        "name": "setupBoilerplate",
+        "message": "Setting up new start page"
       },
       {
         "name": "installNpm",
         "message": "Installing NPM packages"
       },
       {
-        "name": "updateEnvFile",
-        "message": "Updating .env file"
+        "name": "createEmptyLogFile",
+        "message": "Creating log file (storage/logs/laravel.log)"
       },
       {
-        "name": "configureTailwind",
-        "message": "Configuring Tailwind CSS"
+        "name": "addDevServerScript",
+        "message": "Adding devServer.sh script"
       },
       {
-        "name": "runArtisanCommands",
-        "commands": ["key:generate", "storage:link", "migrate"],
-        "message": "Running Laravel Artisan commands"
+        "name": "initializeGit",
+        "message": "Initializing Git repository"
       }
     ]
   }

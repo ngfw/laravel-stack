@@ -21,7 +21,7 @@ class MenuCommand extends Command
             "description" => "Next.js + Laravel API + Breeze: A seamless setup for modern web apps using Next.js as the frontend and Laravel as the backend.",
             "commandName" => 'install:next-breeze',
         ],
-        '◯ React + Tailwind Stack' => [
+        '⚛ React + Tailwind Stack' => [
             "message" => "Installing React + Tailwind stack...",
             "description" => "React + Tailwind CSS: A stack for building modern frontend interfaces with React and styling with Tailwind CSS.",
             "commandName" => 'install:react-tailwind',
@@ -75,13 +75,15 @@ class MenuCommand extends Command
         $io->text('<fg=yellow>Select a stack to install:</fg=yellow>');
 
         foreach (self::$menu as $key => $details) {
-            $io->text(sprintf("<info>%s</info>: \n - %s\n", $key, $details['description']));
+            if($key !== '← Exit'){
+                $io->text(sprintf("<info>%s</info>: \n - %s\n", $key, $details['description']));
+            }
         }
 
         $question = new ChoiceQuestion(
             'Please choose an installation option',
             array_keys(self::$menu),
-            0
+            7
         );
         $question->setErrorMessage('Option %s is invalid.');
         $choice = $io->askQuestion($question);

@@ -44,21 +44,6 @@ class NextBreezeInstaller extends Installer
         $this->output->writeln("<info>✓ Next.js project created.</info>");
         return true;
     }
-    protected function setupBreeze()
-    {
-        $this->output->writeln("<info>→  Setting up Laravel Breeze...</info>");
-
-        $fullPath = $this->projectName . ($this->backendSubDirectory ? "/{$this->backendSubDirectory}" : '');
-        $process = Process::fromShellCommandline("cd {$fullPath} && composer require laravel/breeze --dev");
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            $this->output->writeln("<error>Failed to install laravel/breeze: {$process->getErrorOutput()}</error>");
-            return false;
-        }
-
-        $this->output->writeln("<info>✓ Laravel project created.</info>");
-        return true;
-    }
+   
 
 }

@@ -33,8 +33,7 @@ abstract class BaseInstallCommand extends Command
         $dbHost = $input->getOption('db.host');
         $dbUser = $input->getOption('db.user');
         $dbPassword = $input->getOption('db.password');
-        $io->info(implode(", ", [$projectName , $dbHost , $dbUser, $dbPassword] ));
-
+        
         if (!$projectName  || $dbPassword === null) {
             $io->warning('Some required options are missing or using default values. Falling back to interactive prompts.');
             [$projectName, $dbHost, $dbUser, $dbPassword] = $inputHelper->collectBasicProjectData();

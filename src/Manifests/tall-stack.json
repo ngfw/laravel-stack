@@ -47,6 +47,10 @@
       {
         "name": "addDevServerScript",
         "message": "Adding devServer.sh script"
+      },
+      {
+        "name": "initializeGit",
+        "message": "Initializing Git repository"
       }
     ]
   }

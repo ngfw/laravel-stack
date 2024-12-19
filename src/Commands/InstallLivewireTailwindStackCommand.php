@@ -11,8 +11,4 @@ class InstallLivewireTailwindStackCommand extends BaseInstallCommand
     protected string $title = 'Laravel + Livewire + Tailwind CSS Stack';
     protected string $installerClass = LivewireTailwindStackInstaller::class;
 
-    protected function configure()
-    {
-        $this->setDescription('Installs the Laravel + Livewire + Tailwind CSS stack (for dynamic interfaces)');
-    }
 }

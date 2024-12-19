@@ -8,7 +8,7 @@ Laravel Stack Installer is a powerful command-line tool to quickly set up Larave
 - Interactive menu for easy selection of stacks.
 - Install Laravel with a variety of pre-configured stacks:
   - ▲   Next.js + Breeze
-  - ◯   React + Tailwind Stack
+  - ⚛   React + Tailwind Stack
   - ✧   Vue + Inertia.js + Tailwind Stack
   - τ   TALL Stack
   - ◉   Livewire + Tailwind Stack
@@ -44,6 +44,8 @@ Or add it with command:
 
 ## Usage
 
+![demo](./docs/images/install.gif)
+
 ### Running the Installer
 Once installed, you can use the tool directly from the command line. Run the following command to start the interactive menu:
 ```bash
@@ -52,15 +54,11 @@ laravel-stack
 
 To skip the menu and run a specific installer directly, use the following command format:
 ```bash
-laravel-stack \n
-    --project="<YOUR_PROJECT_NAME>" \n
-    --db.host="<DB_HOST>" \n
-    --db.user="<DB_USER>" \n
-    --db.password="<DB_PASSWORD>"
+laravel-stack --project="<YOUR_PROJECT_NAME>" --db.host="<DB_HOST>" --db.user="<DB_USER>" --db.password="<DB_PASSWORD>"
 ```
 For example:
 ```bash
-laravel-stack --project="MY_FIRST_STACK" --db.host="127.0.0.1" --db.user="root" --db.password="<YOUR_PASSWORD>"
+laravel-stack --project="myFirstStack" --db.host="127.0.0.1" --db.user="root" --db.password="password"
 ```
 
 
@@ -84,6 +82,8 @@ The following installers are available in Laravel Stack Installer. Each provides
 ---
 
 ## Starting the Development Environment
+
+![demo](./docs/images/devServer.gif)
 
 After installing your stack, a `devServer.sh` script is included in your project directory. This script simplifies the process of setting up and running your development environment.
 
@@ -129,9 +129,9 @@ Below is the current status of all supported installers:
 - [x] **React + Tailwind Stack**
 - [x] **Vue + Inertia.js + Tailwind Stack**
 - [x] **TALL Stack**
-- [ ] **Livewire + Tailwind Stack**
-- [ ] **API-Only Stack**
-- [ ] **GraphQL Stack**
+- [x] **Livewire + Tailwind Stack**
+- [ ] **API-Only Stack** (Coming soon)
+- [ ] **GraphQL Stack** (Coming soon)
 
 ---
 

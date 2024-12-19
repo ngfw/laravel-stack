@@ -36,12 +36,15 @@
         "name": "runArtisanCommands",
         "commands": ["key:generate", "storage:link", "migrate"],
         "message": "Running Laravel Artisan commands"
-      },
-      
+      },      
       {
         "name": "addDevServerScript",
         "message": "Adding devServer.sh script"
-      }
+      },
+      {
+        "name": "initializeGit",
+        "message": "Initializing Git repository"
+      },
     ]
   }
   

@@ -41,7 +41,7 @@ abstract class Installer
     {
         $this->output->writeln("<info>Starting Installation process!</info>");
         try {
-            $manifestFile = realpath(dirname(__FILE__) . "/../") . "/{$this->manifestFile}";
+            $manifestFile = realpath(dirname(__FILE__) . "/../") . "{$this->manifestFile}";
             if (!file_exists($manifestFile)) {
                 throw new \Exception("Manifest file not found.");
             }
@@ -211,6 +211,28 @@ abstract class Installer
         }
 
         $this->output->writeln("<info>Database '{$this->projectName}' created successfully.</info>");
+        return true;
+    }
+
+    /**
+     * setup breeze package
+     * 
+     * @return bool
+     */
+    protected function setupBreeze()
+    {
+        $this->output->writeln("<info>→  Setting up Laravel Breeze...</info>");
+
+        $fullPath = $this->projectName . ($this->backendSubDirectory ? "/{$this->backendSubDirectory}" : '');
+        $process = Process::fromShellCommandline("cd {$fullPath} && composer require laravel/breeze --dev");
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            $this->output->writeln("<error>Failed to install laravel/breeze: {$process->getErrorOutput()}</error>");
+            return false;
+        }
+
+        $this->output->writeln("<info>✓ Laravel Breeze installed.</info>");
         return true;
     }
 
@@ -500,8 +522,6 @@ EOT
             throw new \RuntimeException("Failed to copy file: " . ($error['message'] ?? 'Unknown error'));
         }
     }
-
-
 
     /**
      * Logs an error message.

@@ -33,10 +33,6 @@
         "message": "Creating API log file (storage/logs/laravel.log)"
       },
       {
-        "name": "initializeGit",
-        "message": "Initializing Git repository"
-      },
-      {
         "name": "runArtisanCommands",
         "commands": ["key:generate", "storage:link", "breeze:install api", "migrate"],
         "message": "Running Laravel Artisan commands"
@@ -44,6 +40,10 @@
       {
         "name": "addDevServerScript",
         "message": "Adding devServer.sh script"
+      },
+      {
+        "name": "initializeGit",
+        "message": "Initializing Git repository"
       }
     ]
   }
