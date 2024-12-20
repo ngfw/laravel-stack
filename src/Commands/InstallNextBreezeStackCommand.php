@@ -6,7 +6,7 @@ use Ngfw\LaravelStack\Installers\NextBreezeInstaller;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'install:next-breeze')]
-class InstallNextBreezeCommand extends BaseInstallCommand
+class InstallNextBreezeStackCommand extends BaseInstallCommand
 {
     protected string $title = 'Next.js Breeze Stack';
     protected string $installerClass = NextBreezeInstaller::class;

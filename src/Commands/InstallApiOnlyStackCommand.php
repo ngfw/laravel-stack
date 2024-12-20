@@ -5,14 +5,11 @@ namespace Ngfw\LaravelStack\Commands;
 use Ngfw\LaravelStack\Installers\ApiOnlyStackInstaller;
 use Symfony\Component\Console\Attribute\AsCommand;
 
-#[AsCommand(name: 'install:api-only-stack')]
+#[AsCommand(name: 'install:api-only')]
 class InstallApiOnlyStackCommand extends BaseInstallCommand
 {
-    protected string $title = 'Laravel API-Only Stack';
+    protected string $title = 'API-Only';
     protected string $installerClass = ApiOnlyStackInstaller::class;
+    protected ?string $backendSubDirectory = "api";
 
-    protected function configure()
-    {
-        $this->setDescription('Installs the Laravel API-Only stack (no frontend integration, just an API backend)');
-    }
 }

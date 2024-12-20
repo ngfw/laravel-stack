@@ -9,17 +9,29 @@
         "message": "Setting up Laravel backend (API-only)"
       },
       {
-        "name": "setupSanctum",
-        "message": "Setting up Sanctum for API authentication"
+        "name": "setupBreeze",
+        "message": "Setting up Breeze for API authentication"
       },
       {
         "name": "updateEnvFile",
         "message": "Updating .env file"
       },
       {
+        "name": "createEmptyLogFile",
+        "message": "Creating API log file (storage/logs/laravel.log)"
+      },
+      {
         "name": "runArtisanCommands",
-        "commands": ["key:generate", "storage:link", "migrate"],
+        "commands": ["key:generate", "storage:link", "breeze:install api", "migrate"],
         "message": "Running Laravel Artisan commands"
+      },
+      {
+        "name": "addDevServerScript",
+        "message": "Adding devServer.sh script"
+      },
+      {
+        "name": "initializeGit",
+        "message": "Initializing Git repository"
       }
     ]
   }

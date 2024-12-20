@@ -130,7 +130,7 @@ Below is the current status of all supported installers:
 - [x] **Vue + Inertia.js + Tailwind Stack**
 - [x] **TALL Stack**
 - [x] **Livewire + Tailwind Stack**
-- [ ] **API-Only Stack** (Coming soon)
+- [x] **API-Only Stack** 
 - [ ] **GraphQL Stack** (Coming soon)
 
 ---

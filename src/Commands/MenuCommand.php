@@ -44,7 +44,7 @@ class MenuCommand extends Command
         '◯ API-Only Stack' => [
             "message" => "Installing API-Only stack...",
             "description" => "API-Only Stack: A lightweight Laravel setup for purely API-driven applications.",
-            "commandName" => 'install:api-only-stack',
+            "commandName" => 'install:api-only',
         ],
         '⬡ GraphQL Stack' => [
             "message" => "Installing GraphQL stack...",

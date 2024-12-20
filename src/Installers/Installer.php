@@ -557,71 +557,104 @@ EOT
         }
 
         $scriptContent = <<<SCRIPT
-#!/bin/bash
+        #!/bin/bash
 
-################################################################################
-#                                                                              #
-#                          Laravel Stack Dev Server                            #
-#                                                                              #
-#   This script automates the setup of a development environment using tmux.   #
-################################################################################
+        ################################################################################
+        #                                                                              #
+        #                          Laravel Stack Dev Server                            #
+        #                                                                              #
+        #   This script automates the setup of a development environment using tmux.   #
+        ################################################################################
 
-if ! command -v tmux &> /dev/null; then
-    echo "Error: tmux is not installed. Please install tmux (and try again."
-    exit 1
-fi
+        if ! command -v tmux &> /dev/null; then
+            echo "Error: tmux is not installed. Please install tmux and try again."
+            exit 1
+        fi
 
-CURRENT_DIR=$(cd "$(dirname "$0")" && pwd)
+        CURRENT_DIR=$(cd "$(dirname "$0")" && pwd)
 
-SESSION_NAME="dev_server"
-API_DIR="\$CURRENT_DIR/$apiDir"
-WWW_DIR="\$CURRENT_DIR/$wwwDir"
-LOG_FILE="\$API_DIR/storage/logs/laravel.log"
+        SESSION_NAME="dev_server"
+        API_DIR="\$CURRENT_DIR/$apiDir"
+        LOG_FILE="\$API_DIR/storage/logs/laravel.log"
+        WWW_DIR="\$CURRENT_DIR/$wwwDir"
 
-tmux new-session -d -s \$SESSION_NAME -n "Laravel Stack Dev Server $this->version"   # Name the first window
+        # Start a new tmux session and name the first window
+        tmux new-session -d -s \$SESSION_NAME -n "Laravel Stack Dev Server 1.0"
 
-# Split into three panes
-tmux split-window -h -t \$SESSION_NAME:0      
-tmux split-window -v -t \$SESSION_NAME:0.0  
+        # Pane 0.0: Laravel API
+        tmux select-pane -t \$SESSION_NAME:0.0 -T "Laravel API"
+        SCRIPT;
+        if ($this->stack !== 'API-Only') {
+            $scriptContent .= <<<SCRIPT
+            # Pane 0.1: Frontend Dev Server
+            tmux split-window -h -t \$SESSION_NAME:0.0 # Split horizontally for frontend dev server
+            tmux select-pane -t \$SESSION_NAME:0.1 -T "Frontend Dev Server"
 
-# Name the panes
-tmux select-pane -t \$SESSION_NAME:0.0 -T "Laravel API"
-tmux select-pane -t \$SESSION_NAME:0.1 -T "Frontend Dev Server"
-tmux select-pane -t \$SESSION_NAME:0.2 -T "Log Viewer"
+            # Pane 0.2: Log Viewer
+            tmux split-window -v -t \$SESSION_NAME:0.0 # Split vertically for log viewer
+            tmux select-pane -t \$SESSION_NAME:0.2 -T "Log Viewer"
 
-# Send commands to the panes
-tmux send-keys -t \$SESSION_NAME:0.0 "cd \$API_DIR && php artisan serve" Enter
-tmux send-keys -t \$SESSION_NAME:0.1 "cd \$WWW_DIR && npm run dev" Enter
-tmux send-keys -t \$SESSION_NAME:0.2 "tail -f \$LOG_FILE" Enter
+            # Initial commands for each pane
+            tmux send-keys -t \$SESSION_NAME:0.0 "cd \$API_DIR && php artisan serve" Enter
+            tmux send-keys -t \$SESSION_NAME:0.1 "cd \$WWW_DIR && npm run dev" Enter
+            tmux send-keys -t \$SESSION_NAME:0.2 "tail -f \$LOG_FILE" Enter
 
-# Help message for F1
-HELP_MESSAGE="Use the arrow keys to navigate between panes, press F10 to quit."
+            SCRIPT;
+        } else {
+            $scriptContent .= <<<SCRIPT
+            # Pane 0.1: Log Viewer
+            tmux split-window -v -t \$SESSION_NAME:0.0 # Split vertically for log viewer
+            tmux select-pane -t \$SESSION_NAME:0.2 -T "Log Viewer"
 
-tmux bind-key -n F1 display-message "\$HELP_MESSAGE"
-tmux bind-key -n F10 confirm-before -p "Are you sure you want to exit? (y/n)" \
-    "run-shell 'tmux kill-session -t \$SESSION_NAME'"
+            # Initial commands for each pane
+            tmux send-keys -t \$SESSION_NAME:0.0 "cd \$API_DIR && php artisan serve" Enter
+            tmux send-keys -t \$SESSION_NAME:0.1 "tail -f \$LOG_FILE" Enter
+            
+            SCRIPT;
+        }
 
-tmux set -g prefix C-a  
-tmux unbind C-b
-tmux bind C-c run-shell "tmux kill-session -t \$SESSION_NAME"
+        if ($this->stack !== 'API-Only') {
+            $scriptContent .= <<<SCRIPT
+            
+            tmux bind-key -n F2 run-shell "tmux send-keys -t \$SESSION_NAME:0.0 C-c 'cd \$API_DIR && php artisan serve' Enter; tmux send-keys -t \$SESSION_NAME:0.1 C-c 'cd \$WWW_DIR && npm run dev' Enter"
+            SCRIPT;
+        }else{
+            $scriptContent .= <<<SCRIPT
+            
+            tmux bind-key -n F2 run-shell "tmux send-keys -t \$SESSION_NAME:0.0 C-c 'cd \$API_DIR && php artisan serve' Enter;"
+            SCRIPT;
+        }
 
-# Bind arrow keys for cycling through panes
-tmux bind-key -n Up select-pane -U
-tmux bind-key -n Down select-pane -D
-tmux bind-key -n Left select-pane -L
-tmux bind-key -n Right select-pane -R
+        $scriptContent .= <<<SCRIPT
+        
+        tmux bind-key -n F1 display-message "Use the arrow keys to navigate between panes, press F2 to restart server, press F10 to quit."
+        
+        tmux bind-key -n F10 confirm-before -p "Are you sure you want to exit? (y/n)" \
+            "run-shell 'tmux kill-session -t \$SESSION_NAME'"
 
-# Status bar customization
-tmux set-option -g status on
-tmux set-option -g status-interval 5
-tmux set-option -g status-bg black
-tmux set-option -g status-fg white
-tmux set-option -g status-left ''
-tmux set-option -g status-right 'F1: Help | F10: Exit'
+        tmux set -g prefix C-a
+        tmux unbind C-b
+        tmux bind C-c run-shell "tmux kill-session -t \$SESSION_NAME"
 
-tmux attach -t \$SESSION_NAME
+        # Bind arrow keys for cycling through panes
+        tmux bind-key -n Up select-pane -U
+        tmux bind-key -n Down select-pane -D
+        tmux bind-key -n Left select-pane -L
+        tmux bind-key -n Right select-pane -R
 
-SCRIPT;
+        # Status bar customization
+        tmux set-option -g status on
+        tmux set-option -g status-interval 5
+        tmux set-option -g status-bg black
+        tmux set-option -g status-fg white
+        tmux set-option -g status-left ''
+        tmux set-option -g status-right 'F1: Help | F2: Restart Servers | F10: Exit'
+
+        # Attach to the session
+        tmux attach -t \$SESSION_NAME
+
+        SCRIPT;
+       
 
         if (file_put_contents($scriptPath, $scriptContent) === false) {
             $this->output->writeln("<error>Failed to create devServer.sh script.</error>");
