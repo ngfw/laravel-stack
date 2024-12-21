@@ -132,7 +132,7 @@ Below is the current status of all supported installers:
 - [x] **TALL Stack**
 - [x] **Livewire + Tailwind Stack**
 - [x] **API-Only Stack** 
-- [x] **GraphQL Stack** (Coming soon)
+- [x] **GraphQL Stack** 
 
 ---
 
