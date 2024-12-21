@@ -11,8 +11,4 @@ class InstallGraphQLStackCommand extends BaseInstallCommand
     protected string $title = 'Laravel + GraphQL + Apollo Stack';
     protected string $installerClass = GraphQLStackInstaller::class;
 
-    protected function configure()
-    {
-        $this->setDescription('Installs the Laravel + GraphQL + Apollo stack (for building GraphQL APIs)');
-    }
 }

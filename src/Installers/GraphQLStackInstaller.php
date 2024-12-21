@@ -1,88 +1,38 @@
 <?php 
 namespace Ngfw\LaravelStack\Installers;
 
-use Ngfw\LaravelStack\Helpers\DatabaseHelper;
-use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 
-class GraphQLStackInstaller
+
+class GraphQLStackInstaller extends Installer
 {
-    protected $projectName;
-    protected $dbHost;
-    protected $dbUser;
-    protected $dbPassword;
-    protected $output;
+    protected string $manifestFile = '/Manifests/graphqlstack.json';
+    protected string $boilerplatePath = '/Boilerplates/graphQL/';
 
-    private function projectPath(){
-        return getcwd() . "/{$this->projectName}/";
-    }
-    public function __construct($projectName, $dbHost, $dbUser, $dbPassword, OutputInterface $output)
+    public function setupLighthouse()
     {
-        $this->projectName = $projectName;
-        $this->dbHost = $dbHost;
-        $this->dbUser = $dbUser;
-        $this->dbPassword = $dbPassword;
-        $this->output = $output;
-    }
+        $this->output->writeln("<info>→ Setting up GraphQL...</info>");
 
-    public function run()
-    {
-        $this->output->writeln("<info>Setting up Laravel + GraphQL + Apollo stack for '{$this->projectName}'...</info>");
-
-        try {
-            $this->output->writeln("<info>Creating Laravel project...</info>");
-            $this->runShellCommand("composer create-project laravel/laravel {$this->projectName}");
-
-            $this->configureEnv();
-
-            $dbHelper = new DatabaseHelper($this->dbHost, $this->dbUser, $this->dbPassword);
-            if (!$dbHelper->createDatabase($this->projectName)) {
-                $this->output->writeln("<error>Database '{$this->projectName}' already exists or cannot be created.</error>");
-                return false;
-            }
-
-            $this->output->writeln("<info>Installing GraphQL and Apollo...</info>");
-            $this->runShellCommand("cd {$this->projectPath()} && composer require rebing/graphql-laravel");
-
-            $this->output->writeln("<info>Running migrations...</info>");
-            $this->runShellCommand("cd {$this->projectPath()} && php artisan migrate");
-
-            $this->output->writeln("<info>✓ GraphQL + Apollo stack setup completed!</info>");
-            return true;
-        } catch (\Exception $e) {
-            $this->output->writeln("<error>An error occurred: {$e->getMessage()}</error>");
-            return false;
-        }
-    }
-
-    protected function configureEnv()
-    {
-        $envPath = $this->projectPath() . ".env";
-        if (!file_exists($envPath)) {
-            throw new \Exception("The .env file for the project '{$this->projectName}' was not found.");
+        foreach (
+            [
+                'composer require nuwave/lighthouse' => "nuwave/lighthouse Installed",
+                'composer require mll-lab/laravel-graphiql' => "mll-lab/laravel-graphiql installed",
+                'php artisan vendor:publish --tag=lighthouse-schema' => "Lighthouse default schema published",
+            ] as $command => $message
+        ) {
+            $this->execute($command, $message);
         }
 
-        $this->replaceInFile($envPath, 'APP_NAME=.*', "APP_NAME=\"{$this->projectName}\"");
-        $this->replaceInFile($envPath, 'DB_CONNECTION=.*', 'DB_CONNECTION=mysql');
-        $this->replaceInFile($envPath, '# DB_DATABASE=.*', "DB_DATABASE={$this->projectName}");
-        $this->replaceInFile($envPath, '# DB_USERNAME=.*', "DB_USERNAME={$this->dbUser}");
-        $this->replaceInFile($envPath, '# DB_PASSWORD=.*', "DB_PASSWORD={$this->dbPassword}");
-        $this->replaceInFile($envPath, '# DB_HOST=.*', "DB_HOST={$this->dbHost}");
-        $this->replaceInFile($envPath, 'APP_URL=.*', "APP_URL=http://127.0.0.1:8000");
+        $boilerplatePath = realpath(dirname(__FILE__) . "/../") . "{$this->boilerplatePath}";
+        #$this->copyDirectory("$boilerplatePath/src", getcwd() . "/{$this->projectName}" ."/".$this->frontendSubDirectory."/src/");
+        #$this->copyFile(getcwd() . "/{$this->projectName}" ."/".$this->frontendSubDirectory."/.env.example", getcwd() . "/{$this->projectName}" ."/".$this->frontendSubDirectory."/.env.local");
+        
+        $this->output->writeln("<info>✓ GraphQL setup is completed.</info>");
+        return true;
     }
 
-    protected function runShellCommand($command)
+    public function installGraphQL_NPMPackages()
     {
-        $output = shell_exec($command);
-        if ($output === null) {
-            throw new \Exception("Command failed: $command");
-        }
-        $this->output->writeln($output);
-    }
-
-    protected function replaceInFile($filePath, $searchPattern, $replacement)
-    {
-        $fileContents = file_get_contents($filePath);
-        $updatedContents = preg_replace("/^{$searchPattern}/m", $replacement, $fileContents);
-        file_put_contents($filePath, $updatedContents);
+        return $this->execute("npm install @apollo/client graphql", "@apollo graphql package installed");        
     }
 }
