@@ -1,7 +1,8 @@
 
 # Laravel Stack Installer
 
-Laravel Stack Installer is a powerful command-line tool to quickly set up Laravel with different stacks. It simplifies the installation process for developers by automating the setup of popular Laravel configurations.
+Laravel Stack Installer is a powerful command-line tool to set up Laravel with different stacks quickly. 
+It simplifies the installation process for developers by automating the setup of popular Laravel configurations.
 
 ## Features
 
