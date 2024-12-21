@@ -2,8 +2,6 @@
 
 namespace Ngfw\LaravelStack\Installers;
 
-use Symfony\Component\Process\Process;
-
 class VITStackInstaller extends Installer
 {
     protected string $manifestFile = '/Manifests/vit.json';

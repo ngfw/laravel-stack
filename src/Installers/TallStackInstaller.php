@@ -2,9 +2,7 @@
 
 namespace Ngfw\LaravelStack\Installers;
 
-use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Output\OutputInterface;
-use Ngfw\LaravelStack\Helpers\DatabaseHelper;
 
 class TallStackInstaller extends Installer
 {

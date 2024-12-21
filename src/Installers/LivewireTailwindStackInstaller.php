@@ -2,8 +2,6 @@
 namespace Ngfw\LaravelStack\Installers;
 
 use Symfony\Component\Process\Process;
-use Ngfw\LaravelStack\Helpers\DatabaseHelper;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class LivewireTailwindStackInstaller extends Installer
 {

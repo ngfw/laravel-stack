@@ -17,6 +17,10 @@
       "message": "Creating API log file (storage/logs/laravel.log)"
     },
     {
+      "name": "setupBoilerplate",
+      "message": "Creating API log file (storage/logs/laravel.log)"
+    },
+    {
       "name": "runArtisanCommands",
       "commands": ["key:generate", "storage:link", "migrate"],
       "message": "Running Laravel Artisan commands"

@@ -2,7 +2,6 @@
 
 namespace Ngfw\LaravelStack\Installers;
 
-use Symfony\Component\Process\Process;
 use Ngfw\LaravelStack\Helpers\ArrayHelper;
 
 class ReactTailwindStackInstaller extends Installer
