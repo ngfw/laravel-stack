@@ -25,7 +25,7 @@ Laravel Stack Installer is distributed as a Composer package and can be installe
 ### Install via Composer
 Run the following command to install the tool globally using Composer:
 ```bash
-composer global require ngfw/laravel-stack
+composer global require ngfw/laravel-stack -W
 ```
 
 Make sure the composer path (e.g., `~/.composer/vendor/bin` or `~/.config/composer/vendor/bin`) is added to your system's PATH. 
