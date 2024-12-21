@@ -13,6 +13,10 @@
         "message": "Configuring the .env file"
       },
       {
+        "name": "createEmptyLogFile",
+        "message": "Creating log file (storage/logs/laravel.log)"
+      },
+      {
         "name": "installFilament",
         "message": "Installing required Livewire and Filament"
       },

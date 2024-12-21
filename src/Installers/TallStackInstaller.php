@@ -14,7 +14,10 @@ class TallStackInstaller extends Installer
     {
         parent::__construct($stack, $projectName, $dbHost, $dbUser, $dbPassword, $output, $backendSubDirectory, $frontendSubDirectory);
         $this->finalNotes[] = "TALL stack setup for '{$projectName}' completed successfully!";
-        $this->finalNotes[] = "Run Server by executing: ./{$projectName}/dev_server.sh";
+        $this->finalNotes[] = "Run Server by executing: ";
+        $this->finalNotes[] = "cd {$projectName}/";
+        $this->finalNotes[] = "./devServer.sh";
+        $this->finalNotes[] = "";
         $this->finalNotes[] = "Application homepage: http://127.0.0.1:8000/";
         $this->finalNotes[] = "Admin Panel: http://127.0.0.1:8000/admin/";
         $this->finalNotes[] = "Username: admin@{$projectName}.com";
