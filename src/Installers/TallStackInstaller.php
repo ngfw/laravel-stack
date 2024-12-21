@@ -69,18 +69,4 @@ class TallStackInstaller extends Installer
             "Done - email: admin@{$this->projectName}.com password: admin "
         );
     }
-
-    protected function execute($command, $message = null)
-    {
-        $this->output->writeln("<info>→  Executing: {$command}</info>");
-        $projectPath = $this->getBackendDirectory();
-        $process = Process::fromShellCommandline("cd {$projectPath} && {$command}");
-        $process->run();
-        if (!$process->isSuccessful()) {
-            $this->output->writeln("<error>Error executing {$command}: {$process->getErrorOutput()}</error>");
-            return false;
-        }
-        $this->output->writeln("<info>✓ " . ($message ? $message : 'done!') . "</info>");
-        return true;
-    }
 }

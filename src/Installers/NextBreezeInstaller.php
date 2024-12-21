@@ -29,7 +29,7 @@ class NextBreezeInstaller extends Installer
     {
         $this->output->writeln("<info>→ Setting up Next.js frontend...</info>");
 
-        $process = Process::fromShellCommandline("git clone {$this->breezeNextURL} {$this->projectName}/www");
+        $process = Process::fromShellCommandline("git clone {$this->breezeNextURL} {$this->projectName}/{$this->frontendSubDirectory}");
         $process->run();
 
         if (!$process->isSuccessful()) {
@@ -38,8 +38,8 @@ class NextBreezeInstaller extends Installer
         }
 
         $boilerplatePath = realpath(dirname(__FILE__) . "/../") . "{$this->boilerplatePath}";
-        $this->copyDirectory("$boilerplatePath/src", getcwd() . "/{$this->projectName}" ."/www/src/");
-        $this->copyFile(getcwd() . "/{$this->projectName}" ."/www/.env.example", getcwd() . "/{$this->projectName}" ."/www/.env.local");
+        $this->copyDirectory("$boilerplatePath/src", getcwd() . "/{$this->projectName}" ."/".$this->frontendSubDirectory."/src/");
+        $this->copyFile(getcwd() . "/{$this->projectName}" ."/".$this->frontendSubDirectory."/.env.example", getcwd() . "/{$this->projectName}" ."/".$this->frontendSubDirectory."/.env.local");
 
         $this->output->writeln("<info>✓ Next.js project created.</info>");
         return true;

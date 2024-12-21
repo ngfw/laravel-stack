@@ -51,6 +51,9 @@ abstract class Installer
             }
 
             $manifest = json_decode(file_get_contents($manifestFile), true);
+            if (!is_array($manifest)) {
+                throw new \Exception("Error Reading Manifest file: ". $manifestFile);
+            }
             $this->validateManifest($manifest);
 
             foreach ($manifest['steps'] as $k => $step) {
@@ -127,6 +130,27 @@ abstract class Installer
             $this->logError("Step '$method' failed: " . $e->getMessage());
             return false;
         }
+    }
+
+    /**
+     * Runs CLI command in backedend directory
+     * @param mixed $command
+     * @param mixed $message
+     * @return bool
+     */
+    protected function execute($command, $message = null)
+    {
+        $this->output->writeln("<info>→  Executing: {$command}</info>");
+        $projectPath = $this->getBackendDirectory();
+        $process = Process::fromShellCommandline("cd {$projectPath} && {$command}");
+        $process->setTimeout(300);
+        $process->run();
+        if (!$process->isSuccessful()) {
+            $this->output->writeln("<error>Error executing {$command}: {$process->getErrorOutput()}</error>");
+            return false;
+        }
+        $this->output->writeln("<info>✓ " . ($message ? $message : 'done!') . "</info>");
+        return true;
     }
 
     /**

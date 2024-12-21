@@ -12,7 +12,7 @@ class VITStackInstaller extends Installer
     public function vuefy()
     {
         $this->output->writeln("<info>Setting up Vue.js + Tailwind CSS stack for '{$this->projectName}'...</info>");
-        $projectPath = $this->getBackendDirectory();
+        
         foreach (
             [
                 'composer require inertiajs/inertia-laravel' => "Inertia Backend Installed",
@@ -30,6 +30,7 @@ class VITStackInstaller extends Installer
         }
 
         // Generate vite.config.ts
+        $projectPath = $this->getBackendDirectory();
         $viteConfigPath = "$projectPath/vite.config.js";
         file_put_contents(
             $viteConfigPath,
@@ -73,20 +74,5 @@ class VITStackInstaller extends Installer
         $this->output->writeln("<info>✓ Vue.js setup completed</info>");
         return true;
     }
-
-
-    protected function execute($command, $message = null)
-    {
-        $this->output->writeln("<info>→  Executing: {$command}</info>");
-        $projectPath = $this->getBackendDirectory();
-        $process = Process::fromShellCommandline("cd {$projectPath} && {$command}");
-        $process->setTimeout(300);
-        $process->run();
-        if (!$process->isSuccessful()) {
-            $this->output->writeln("<error>Error executing {$command}: {$process->getErrorOutput()}</error>");
-            return false;
-        }
-        $this->output->writeln("<info>✓ " . ($message ? $message : 'done!') . "</info>");
-        return true;
-    }
+  
 }
