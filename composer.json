@@ -1,6 +1,6 @@
 {
     "name": "ngfw/laravel-stack",
-    "type": "project",
+    "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
@@ -19,5 +19,8 @@
     "require": {
         "symfony/console": "^7.2",
         "symfony/process": "^7.2"
-    }
+    },
+    "bin": [
+        "bin/laravel-stack"
+    ]
 }
