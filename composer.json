@@ -22,5 +22,10 @@
     },
     "bin": [
         "bin/laravel-stack"
-    ]
+    ],
+    "scripts": {
+        "post-install-cmd": [
+            "@php -r \"if (file_exists(__DIR__ . '/vendor/autoload.php') === false) { passthru('composer install'); }\""
+        ]
+    }
 }
