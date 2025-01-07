@@ -64,7 +64,7 @@ laravel-stack --project="myFirstStack" --db.host="127.0.0.1" --db.user="root" --
 
 
 ### **IMPORTANT!**
-**_Installer will create new MySQL database and name it your project name._**
+**_The installer currently supports only MySQL as the database option. A new MySQL database will be created and named after your project. If you require a different database engine, you will need to update the configuration manually after installation._**
 
 ---
 
